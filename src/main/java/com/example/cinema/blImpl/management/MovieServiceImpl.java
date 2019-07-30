@@ -16,6 +16,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -66,11 +67,13 @@ public class MovieServiceImpl implements MovieService {
     @Override
     @Transactional(rollbackFor = DuplicateKeyException.class)
     public @Nullable String likeMovie(int userId, int movieId) {
-        //todo: user 判空
+        //user 判空(已补充
         if (userLikeTheMovie(userId, movieId)) {
             return ALREADY_LIKE_ERROR_MESSAGE;
         } else if (movieMapper.selectMovieById(movieId) == null) {
             return MOVIE_NOT_EXIST_ERROR_MESSAGE;
+        } else if(accountMapper.getAccountById(userId)==null){
+            return USER_NOT_EXIST_ERROR_MESSAGE;
         }
         movieLikeMapper.insertOneLike(movieId, userId);
         return null;
@@ -80,9 +83,10 @@ public class MovieServiceImpl implements MovieService {
     public @Nullable String unLikeMovie(int userId, int movieId) {
         if (!userLikeTheMovie(userId, movieId)) {
             return UNLIKE_ERROR_MESSAGE;
-        } else if (movieMapper.selectMovieById(movieId) == null) {
-            return MOVIE_NOT_EXIST_ERROR_MESSAGE;
         }
+//        else if (movieMapper.selectMovieById(movieId) == null) {
+//            return MOVIE_NOT_EXIST_ERROR_MESSAGE;
+//        }
         movieLikeMapper.deleteOneLike(movieId, userId);
         return null;
     }

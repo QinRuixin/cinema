@@ -17,14 +17,25 @@
 
     <select id="selectMovieByIdAndUserId" resultMap="Movie">
         select *
-        from (select *
-              from movie m,
-                   (select count(*) as isLike
-                    from movie_like ml
-                    where ml.movie_id = #{id} and ml.user_id = #{userId}) ik
-              where id = #{id}) a
-                 left join (select l.movie_id as id, count(*) as likeCount from movie_like l where l.movie_id = #{id}) b
-                           on a.id = b.id
+        from
+        movie m,
+        (select count(*) as isLike
+            from movie_like ml
+            where ml.movie_id = #{id} and ml.user_id = #{userId}) ik,
+        (select count(*) as likeCount
+            from movie_like ml
+            where ml.movie_id = #{id}) lc
+        where id = #{id}
+
+--         select *
+--         from (select *
+--               from movie m,
+--                    (select count(*) as isLike
+--                     from movie_like ml
+--                     where ml.movie_id = #{id} and ml.user_id = #{userId}) ik,
+--               where id = #{id}) a
+--                  left join (select l.movie_id as id, count(*) as likeCount from movie_like l where l.movie_id = #{id}) b
+--                            on a.id = b.id
     </select>
 
     <select id="selectAllMovie" resultMap="Movie">

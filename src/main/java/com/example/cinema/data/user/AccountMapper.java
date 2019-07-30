@@ -27,4 +27,6 @@ public interface AccountMapper {
      * @return 对应用户
      */
     UserVO getAccountByName(@Param("username") String username);
+
+    UserVO getAccountById(int id);
 }

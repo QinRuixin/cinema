@@ -12,6 +12,12 @@
         where username = #{username}
     </select>
 
+    <select id="getAccountById" resultMap="User">
+        select *
+        from user
+        where id = #{id}
+    </select>
+
     <resultMap id="User" type="com.example.cinema.vo.UserVO">
     </resultMap>
 </mapper>
