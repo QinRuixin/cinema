@@ -5,6 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
+ * 返回的电影信息表
  * @author fjj
  * @date 2019/3/23 1:12 PM
  */
@@ -50,6 +51,7 @@ public class MovieVO {
      * 上映时间
      */
     private Date startDate;
+
     /**
      * 片长
      */

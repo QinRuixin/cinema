@@ -111,6 +111,8 @@ $(document).ready(function() {
         );
     }
 
+
+
     $(document).on('click','.schedule-item',function (e) {
         var schedule = JSON.parse(e.target.dataset.schedule);
         $("#schedule-edit-hall-input").children('option[value='+schedule.hallId+']').attr('selected',true);
@@ -131,7 +133,12 @@ $(document).ready(function() {
             endTime: $("#schedule-end-date-input").val(),
             fare: $("#schedule-price-input").val()
         };
-        //todo 需要做一下表单验证？
+
+
+        //需要做一下表单验证
+        if(!validateScheduleForm(form)){
+            return;
+        }
 
         postRequest(
             '/schedule/add',
@@ -159,7 +166,12 @@ $(document).ready(function() {
             endTime: $("#schedule-edit-end-date-input").val(),
             fare: $("#schedule-edit-price-input").val()
         };
-        //todo 需要做一下表单验证？
+
+        // 需要做一下表单验证
+
+        if(!validateEditForm(form)){
+            return;
+        }
 
         postRequest(
             '/schedule/update',
@@ -177,6 +189,69 @@ $(document).ready(function() {
             }
         );
     });
+
+
+    function validateScheduleForm(form){
+        var isValidate = true;
+        if(!form.hallId){
+            isValidate =false;
+            $("#schedule-hall-input").parent('.form-group').addClass('has-error');
+        }
+        if(!form.movieId){
+            isValidate =false;
+            $("#schedule-movie-input").parent('.form-group').addClass('has-error');
+        }
+        if(!form.startTime){
+            isValidate =false;
+            $("#schedule-start-date-input").parent('.form-group').addClass('has-error');
+        }
+        if(!form.endTime){
+            isValidate =false;
+            $("#schedule-end-date-input").parent('.form-group').addClass('has-error');
+        }
+        if(!form.fare){
+            isValidate = false;
+            $("#schedule-price-input").parent('.form-group').addClass('has-error');
+        }
+        if(isValidate){
+            if(form.endTime<=form.startTime){
+                isValidate =false;
+                $("#schedule-end-date-input").parent('.form-group').addClass('has-error');
+                }
+            }
+        return isValidate;
+    }
+
+    function validateEditForm(form){
+        var isValidate = true;
+        if(!form.hallId){
+            isValidate =false;
+            $("#schedule-edit-hall-input").parent('.form-group').addClass('has-error');
+        }
+        if(!form.movieId){
+            isValidate =false;
+            $("#schedule-edit-movie-input").parent('.form-group').addClass('has-error');
+        }
+        if(!form.startTime){
+            isValidate =false;
+            $("#schedule-edit-start-date-input").parent('.form-group').addClass('has-error');
+        }
+        if(!form.endTime){
+            isValidate =false;
+            $("#schedule-edit-end-date-input").parent('.form-group').addClass('has-error');
+        }
+        if(!form.fare){
+            isValidate = false;
+            $("#schedule-edit-price-input").parent('.form-group').addClass('has-error');
+        }
+        if(isValidate){
+            if(form.endTime<=form.startTime){
+                isValidate =false;
+                $("#schedule-edit-end-date-input").parent('.form-group').addClass('has-error');
+            }
+        }
+        return isValidate;
+    }
 
     $("#schedule-edit-remove-btn").click(function () {
         var r=confirm("确认要删除该排片信息吗")

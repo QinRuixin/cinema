@@ -5,6 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
+ * 传入的电影信息表
  * @author fjj
  * @date 2019/3/12 6:20 PM
  */
