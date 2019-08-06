@@ -112,7 +112,6 @@ $(document).ready(function() {
     }
 
 
-
     $(document).on('click','.schedule-item',function (e) {
         var schedule = JSON.parse(e.target.dataset.schedule);
         $("#schedule-edit-hall-input").children('option[value='+schedule.hallId+']').attr('selected',true);
@@ -133,7 +132,6 @@ $(document).ready(function() {
             endTime: $("#schedule-end-date-input").val(),
             fare: $("#schedule-price-input").val()
         };
-
 
         //需要做一下表单验证
         if(!validateScheduleForm(form)){
@@ -168,7 +166,6 @@ $(document).ready(function() {
         };
 
         // 需要做一下表单验证
-
         if(!validateEditForm(form)){
             return;
         }

@@ -68,6 +68,10 @@ $(document).ready(function() {
     $('#canview-confirm-btn').click(function () {
         var dayNum = $("#canview-set-input").val();
         // 验证一下是否为数字
+        if(!/^\d+$/.test(dayNum)){
+            return;
+        }
+
         postRequest(
             '/schedule/view/set',
             {day:dayNum},

@@ -3,6 +3,7 @@ package com.example.cinema.data.statistics;
 import com.example.cinema.vo.AudiencePrice;
 import com.example.cinema.vo.MovieScheduleTimeVO;
 import com.example.cinema.vo.MovieTotalBoxOfficeVO;
+import com.example.cinema.vo.PlacingNumAndHall;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -38,4 +39,17 @@ public interface StatisticsMapper {
      * @return
      */
     List<AudiencePrice> selectAudiencePrice(@Param("date") Date date, @Param("nextDate") Date nextDate);
+
+    /**
+     * 查询某天某影厅电影购票人数及影厅大小
+     *
+     *
+     * @param date
+     * @param nextDate
+     * @return
+     */
+    List<PlacingNumAndHall> selectPlacingNumAndHall(@Param("date") Date date, @Param("nextDate") Date nextDate);
+
+
+
 }

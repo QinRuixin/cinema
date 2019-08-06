@@ -2,18 +2,13 @@ package com.example.cinema.blImpl.statistics;
 
 import com.example.cinema.bl.statistics.StatisticsService;
 import com.example.cinema.data.statistics.StatisticsMapper;
-import com.example.cinema.vo.AudiencePrice;
-import com.example.cinema.vo.AudiencePriceVO;
-import com.example.cinema.vo.MovieScheduleTimeVO;
+import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author fjj
@@ -61,8 +56,48 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List getMoviePlacingRateByDate(Date date) {
-        return null;
+    public List getMoviePlacingRateByDate(Date date) throws ParseException{
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        date = simpleDateFormat.parse(simpleDateFormat.format(date));
+        Date nextDate = getNumDayAfterDate(date,1);
+        List<PlacingNumAndHall> numAndHalls = statisticsMapper.selectPlacingNumAndHall(date,nextDate);
+        List<PlacingRateVO> moviePlacingRateVOList = new ArrayList<>();
+        HashMap<Integer,Integer> idAndNum = new HashMap<>();
+
+        for (int i = 0; i < numAndHalls.size(); i++) {
+            int movieId = numAndHalls.get(i).getMovieId();
+            if(!idAndNum.containsKey(movieId)){
+                idAndNum.put(movieId,1);
+            }else {
+                idAndNum.put(movieId,2);
+            }
+        }
+
+        for (int i = 0; i < numAndHalls.size(); i++) {
+            PlacingRateVO temp = new PlacingRateVO();
+            PlacingNumAndHall now = numAndHalls.get(i);
+            int movieId = now.getMovieId();
+            temp.setMovieId(movieId);
+            temp.setName(now.getMovieName());
+
+            if(idAndNum.get(movieId)==1){
+//                double rate = (double)now.getNum()/(now.getRow()*now.getColumn());
+                temp.setRate(Double.parseDouble(String.format("%.2f",
+                        (double)now.getNum()/(now.getRow()*now.getColumn()))));
+                //是否可行
+            }else {
+                int num1 = now.getNum();
+                int total1 = now.getRow()*now.getColumn();
+                i++;
+                now = numAndHalls.get(i);
+                int num2 = now.getNum();
+                int total2 = now.getRow()*now.getColumn();
+                temp.setRate(Double.parseDouble(String.format("%.2f",
+                        (double)(num1+num2)/(total1+total2))));
+            }
+            moviePlacingRateVOList.add(temp);
+        }
+        return moviePlacingRateVOList;
     }
 
     @Override

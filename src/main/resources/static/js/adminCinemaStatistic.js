@@ -61,7 +61,7 @@ $(document).ready(function() {
                             type:'pie',
                             radius : [30, 110],
                             center : ['50%', '50%'],
-                            roseType : 'area',
+                            roseType : 'radius',
                             data:tableData
                         }
                     ]
@@ -150,7 +150,61 @@ $(document).ready(function() {
     }
 
     function getPlacingRate() {
-        // todo
+        getRequest(
+            '/statistics/placingRate?date='+'2019/04/21',
+            // '/statistics/placingRate?date='+formatDate(new Date()).replace(/-/g,'/'),
+            function (res) {
+                var data = res.content || [];
+                var tableData = data.map(
+                    function (item) {
+                        return item.rate;
+                    }
+                );
+                var nameList = data.map(function (item) {
+                    return item.name;
+                });
+                var option = {
+                    title: {
+                        text: '上座率',
+                        subtext: new Date().toLocaleDateString(),
+                        x:'center'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: nameList
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                            show: true,
+                            interval: 'auto',
+                            formatter: function (data) {
+                                        return data*100+'%';
+                                    }
+                        },
+                        show: true
+                    },
+                    series: [{
+                        data: tableData,
+                        type: 'bar'
+                    }]
+                    // tooltip:{
+                    //     show:true,
+                    //     trigger: 'yAxis',
+                    //     formatter: function (datas) {
+                    //         return ''+datas*100+'%';
+                    //     }
+                    //
+                    // }
+                };
+                var placingRateChart = echarts.init($("#place-rate-container")[0]);
+                placingRateChart.setOption(option);
+
+            },
+        function (error) {
+            alert(JSON.stringify(error));
+            }
+        );
     }
 
     function getPolularMovie() {

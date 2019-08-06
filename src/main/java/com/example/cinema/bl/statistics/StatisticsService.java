@@ -36,11 +36,13 @@ public interface StatisticsService {
     /**
      * 获取所有电影某天的上座率
      * 上座率参考公式：假设某影城设有n 个电影厅、m 个座位数，相对上座率=观众人次÷放映场次÷m÷n×100%
+     * 公式有误？
+     * 当日某影片上座率=当日该影片观影人数/∑【当日每场电影放映场次*每场所在影厅的座位数】
      *
      * @param date
      * @return
      */
-    List getMoviePlacingRateByDate(Date date);
+    List getMoviePlacingRateByDate(Date date) throws ParseException;
 
     /**
      * 获取最近days天内，最受欢迎的movieNum个电影(可以简单理解为最近days内票房越高的电影越受欢迎)
@@ -49,5 +51,5 @@ public interface StatisticsService {
      * @param movieNum
      * @return
      */
-    List getPopularMovies(int days, int movieNum);
+    List getPopularMovies(int days, int movieNum) throws ParseException;
 }

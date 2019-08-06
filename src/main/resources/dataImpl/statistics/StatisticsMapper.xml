@@ -35,4 +35,28 @@
              on schedule.id = schedule_id
         group by user_id
     </select>
+
+    <select id="selectPlacingNumAndHall" resultMap="PlacingNumAndHall">
+        select * from
+            (select count(*) as num,movie_id,hall_id from
+                (select * from ticket where schedule_id in
+                    (select id from schedule where start_time between #{date} and #{nextDate} )
+                    and state = 1) t,
+                schedule
+                where t.schedule_id = schedule.id
+            group by movie_id, hall_id) mh
+            left join
+            hall
+            on mh.hall_id=hall.id
+
+            left join
+	        (select id,name as movie_name from movie) n
+	        on n.id = mh.movie_id
+    </select>
+
+    <resultMap id="PlacingNumAndHall" type="com.example.cinema.vo.PlacingNumAndHall">
+        <result column="hall_id" property="hallId"/>
+        <result column="movie_id" property="movieId"/>
+        <result column="movie_name" property="movieName"/>
+    </resultMap>
 </mapper>

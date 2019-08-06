@@ -47,14 +47,24 @@ public class StatisticsController {
         }
     }
 
-    @GetMapping("statistics/PlacingRate")
+    @GetMapping("statistics/placingRate")
     public ResponseVO getMoviePlacingRateByDate(@RequestParam Date date) {
-        return ResponseVO.buildSuccess(statisticsService.getMoviePlacingRateByDate(date));
+        try {
+            return ResponseVO.buildSuccess(statisticsService.getMoviePlacingRateByDate(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure(e.toString());
+        }
     }
 
     @GetMapping("statistics/popular/movie")
     public ResponseVO getPopularMovies(@RequestParam int days, @RequestParam int movieNum) {
-        return ResponseVO.buildSuccess(statisticsService.getPopularMovies(days, movieNum));
+        try {
+            return ResponseVO.buildSuccess(statisticsService.getPopularMovies(days, movieNum));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure(e.toString());
+        }
     }
 
 
