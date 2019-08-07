@@ -72,6 +72,21 @@ $(document).ready(function() {
         );
     }
 
+    function addAllMovies(selectedMovieIds) {
+        getRequest(
+            '/movie/all/exclude/off',
+            function (res) {
+                var movieList = res.content;
+                movieList.forEach(function (movie) {
+                   selectedMovieIds.add(movie.id);
+                });
+            },
+            function (error) {
+                alert(error);
+            }
+        );
+    }
+
     $("#activity-form-btn").click(function () {
        var form = {
            name: $("#activity-name-input").val(),
@@ -109,6 +124,7 @@ $(document).ready(function() {
     //ES6新api 不重复集合 Set
     var selectedMovieIds = new Set();
     var selectedMovieNames = new Set();
+    var firstClickSingle = true;
 
     $('#activity-movie-input').change(function () {
         var movieId = $('#activity-movie-input').val();
@@ -116,6 +132,14 @@ $(document).ready(function() {
         if(movieId==-1){
             selectedMovieIds.clear();
             selectedMovieNames.clear();
+            addAllMovies(selectedMovieIds);
+            firstClickSingle = true;
+        } else if(firstClickSingle) {
+            selectedMovieIds.clear();
+            selectedMovieNames.clear();
+            selectedMovieIds.add(movieId);
+            selectedMovieNames.add(movieName);
+            firstClickSingle = !firstClickSingle;
         } else {
             selectedMovieIds.add(movieId);
             selectedMovieNames.add(movieName);

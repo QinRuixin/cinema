@@ -209,7 +209,7 @@ $(document).ready(function() {
 
     function getPopularMovie() {
         getRequest(
-            '/statistics/popular/movie?days=180&movieNum=5',
+            '/statistics/popular/movie?days=30&movieNum=5',
             function (res) {
                 var data = res.content || [];
                 var tableData = data.map(
