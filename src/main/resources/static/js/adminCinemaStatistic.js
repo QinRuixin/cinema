@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     getPlacingRate();
 
-    getPolularMovie();
+    getPopularMovie();
 
     function getScheduleRate() {
 
@@ -151,8 +151,8 @@ $(document).ready(function() {
 
     function getPlacingRate() {
         getRequest(
-            '/statistics/placingRate?date='+'2019/04/21',
-            // '/statistics/placingRate?date='+formatDate(new Date()).replace(/-/g,'/'),
+            // '/statistics/placingRate?date='+'2019/04/21',
+            '/statistics/placingRate?date='+formatDate(new Date()).replace(/-/g,'/'),
             function (res) {
                 var data = res.content || [];
                 var tableData = data.map(
@@ -207,7 +207,45 @@ $(document).ready(function() {
         );
     }
 
-    function getPolularMovie() {
-        // todo
+    function getPopularMovie() {
+        getRequest(
+            '/statistics/popular/movie?days=180&movieNum=5',
+            function (res) {
+                var data = res.content || [];
+                var tableData = data.map(
+                    function (item) {
+                        return item.boxOffice;
+                });
+                var nameList = data.map(
+                    function (item) {
+                        return item.name;
+                });
+
+                var option = {
+                    title:  {
+                        text: '一个月内最受欢迎电影',
+                        subtext: '截止至'+new Date().toLocaleDateString(),
+                        x:'center'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: nameList
+                    },
+
+                    yAxis:{
+                        type: 'value'
+                        // data: tableData
+                    },
+                    series: [{
+                        data: tableData,
+                        type: 'bar'
+                    }]
+                };
+
+                var popularMovieChart = echarts.init($('#popular-movie-container')[0]);
+                popularMovieChart.setOption(option);
+            }
+
+        )
     }
 });

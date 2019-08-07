@@ -64,12 +64,12 @@ public class StatisticsServiceImpl implements StatisticsService {
         List<PlacingRateVO> moviePlacingRateVOList = new ArrayList<>();
         HashMap<Integer,Integer> idAndNum = new HashMap<>();
 
-        for (int i = 0; i < numAndHalls.size(); i++) {
-            int movieId = numAndHalls.get(i).getMovieId();
-            if(!idAndNum.containsKey(movieId)){
-                idAndNum.put(movieId,1);
-            }else {
-                idAndNum.put(movieId,2);
+        for (PlacingNumAndHall numAndHall : numAndHalls) {
+            int movieId = numAndHall.getMovieId();
+            if (!idAndNum.containsKey(movieId)) {
+                idAndNum.put(movieId, 1);
+            } else {
+                idAndNum.put(movieId, 2);
             }
         }
 
@@ -101,8 +101,11 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List getPopularMovies(int days, int movieNum) {
-        return null;
+    public List getPopularMovies(int days, int movieNum) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date endDate = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+        Date startDate = getNumDayAfterDate(endDate,-days);
+        return statisticsMapper.selectMovieBoxOfficeSeveralDays(startDate,endDate,movieNum);
     }
 
 

@@ -1,9 +1,6 @@
 package com.example.cinema.data.statistics;
 
-import com.example.cinema.vo.AudiencePrice;
-import com.example.cinema.vo.MovieScheduleTimeVO;
-import com.example.cinema.vo.MovieTotalBoxOfficeVO;
-import com.example.cinema.vo.PlacingNumAndHall;
+import com.example.cinema.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -50,6 +47,14 @@ public interface StatisticsMapper {
      */
     List<PlacingNumAndHall> selectPlacingNumAndHall(@Param("date") Date date, @Param("nextDate") Date nextDate);
 
-
+    /**
+     * 查询某段时间内票房排行前movieNum的电影及票房
+     *
+     * @param startDate
+     * @param endDate
+     * @param movieNum
+     * @return
+     */
+    List<MovieBoxOfficeSeveralDaysVO> selectMovieBoxOfficeSeveralDays(Date startDate,Date endDate,int movieNum);
 
 }

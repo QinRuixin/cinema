@@ -52,4 +52,5 @@ public interface StatisticsService {
      * @return
      */
     List getPopularMovies(int days, int movieNum) throws ParseException;
+
 }

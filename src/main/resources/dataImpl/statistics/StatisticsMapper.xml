@@ -54,6 +54,22 @@
 	        on n.id = mh.movie_id
     </select>
 
+    <select id="selectMovieBoxOfficeSeveralDays" resultType="com.example.cinema.vo.MovieBoxOfficeSeveralDaysVO">
+        select movie.id as movieId, boxOffice, name
+        from movie
+            left join
+	        (select movie_id as movieId, sum(fare) as boxOffice
+	        from schedule
+		        right join
+		        (select schedule_id from ticket where  state = 1 ) t
+		    on schedule.id = t.schedule_id
+	        where schedule.start_time between #{startDate} and #{endDate}) s
+	    on s.movieId = movie.id
+        order by boxOffice desc
+        limit #{movieNum}
+
+    </select>
+
     <resultMap id="PlacingNumAndHall" type="com.example.cinema.vo.PlacingNumAndHall">
         <result column="hall_id" property="hallId"/>
         <result column="movie_id" property="movieId"/>
