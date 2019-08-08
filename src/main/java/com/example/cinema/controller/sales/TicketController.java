@@ -3,6 +3,7 @@ package com.example.cinema.controller.sales;
 import com.example.cinema.bl.sales.TicketService;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.TicketForm;
+import com.example.cinema.vo.TicketVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +27,14 @@ public class TicketController {
 
     @PostMapping("/lockSeat")
     public ResponseVO lockSeat(@RequestBody TicketForm ticketForm) {
-        ticketService.addTicket(ticketForm);
-        return ResponseVO.buildSuccess();
+        return ResponseVO.buildSuccess(ticketService.addTicket(ticketForm));
     }
+
+//    @GetMapping("/getOrder")
+//    public ResponseVO getOrderByTicketVO(@RequestBody TicketVO TicketVO){
+//        ticketService.getOrder(ticketForm);
+//        return ResponseVO.buildSuccess();
+//    }
 
     @PostMapping("/buy")
     public ResponseVO buyTicket(@RequestParam List<Integer> ticketId, @RequestParam int couponId) {

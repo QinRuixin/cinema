@@ -2,6 +2,8 @@ package com.example.cinema.bl.sales;
 
 import com.example.cinema.vo.ScheduleWithSeatVO;
 import com.example.cinema.vo.TicketForm;
+import com.example.cinema.vo.TicketVO;
+import com.example.cinema.vo.TicketWithCouponVO;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ public interface TicketService {
      *
      * @param ticketForm
      */
-    void addTicket(TicketForm ticketForm);
+    TicketWithCouponVO addTicket(TicketForm ticketForm);
 
     /**
      * TODO:完成购票【不使用会员卡】流程包括校验优惠券和根据优惠活动赠送优惠券

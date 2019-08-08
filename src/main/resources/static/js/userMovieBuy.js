@@ -4,7 +4,6 @@ var order = {ticketId: [], couponId: 0};
 var coupons = [];
 var isVIP = false;
 var useVIP = true;
-var orderInfo;
 
 
     $(document).ready(function () {
@@ -125,6 +124,8 @@ function orderConfirmClick() {
 
     postLockSeat(ticketForm);
 
+
+
     // TODO:这里是假数据，需要连接后端获取真数据，数据格式可以自行修改，但如果改了格式，别忘了修改renderOrder方法
     // var orderInfo = {
     //     "ticketVOList":
@@ -188,7 +189,7 @@ function orderConfirmClick() {
     //         }
     //     }]
     // };
-    renderOrder(orderInfo);
+
 
     getRequest(
         '/vip/' + sessionStorage.getItem('id') + '/get',
@@ -216,20 +217,20 @@ function postLockSeat(ticketForm) {
         '/ticket/lockSeat',
         ticketForm,
         function (res) {
-            if(res.success){
-                orderInfo =  getOrderInfo();
-            }else {
-                alert(res.message);
-            }
+            var orderInfo = res.content;
+                // var orderInfos = res.content;
+                // var orderInfo= {
+                //     "ticketVOList": orderInfos.ticketVOList,
+                //     "total": orderInfos.total,
+                //     "coupons": orderInfos.coupons,
+                //     "activities": orderInfos.activities
+                // };
+            renderOrder(orderInfo);
         },
         function (error) {
             alert(JSON.stringify(error));
         }
-    )
-}
-
-function getOrderInfo(){
-
+    );
 }
 
 function switchPay(type) {

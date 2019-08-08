@@ -7,6 +7,8 @@ import com.example.cinema.data.promotion.ActivityMapper;
 import com.example.cinema.data.promotion.CouponMapper;
 import com.example.cinema.data.promotion.VIPCardMapper;
 import com.example.cinema.data.sales.TicketMapper;
+import com.example.cinema.po.Activity;
+import com.example.cinema.po.Coupon;
 import com.example.cinema.po.Ticket;
 import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
-    public void addTicket(TicketForm ticketForm) {
+    public TicketWithCouponVO addTicket(TicketForm ticketForm) {
         List<SeatForm> seats = ticketForm.getSeats();
         int userId = ticketForm.getUserId();
         int scheduleId = ticketForm.getScheduleId();
@@ -53,6 +55,51 @@ public class TicketServiceImpl implements TicketService {
             tickets.add(ticket);
         });
         ticketMapper.insertTickets(tickets);
+        //创建TicketWithCouponVO对象
+        TicketWithCouponVO ticketWithCouponVO = new TicketWithCouponVO();
+
+        //处理List<TicketVO>
+        List<TicketVO> ticketVOs = new ArrayList<>();
+        int size = tickets.size();
+        for (int i = 0; i < size; i++) {
+            TicketVO ticketVO = new TicketVO();
+            Ticket ticket = tickets.get(i);
+            ticketVO.setId(ticket.getId());
+            ticketVO.setScheduleId(ticket.getScheduleId());
+            ticketVO.setUserId(ticket.getUserId());
+            ticketVO.setState(ticket.getState() == 0 ? "未完成" : "已完成");
+            ticketVO.setTime(ticket.getTime());
+            ticketVO.setRowIndex(ticket.getRowIndex());
+            ticketVO.setColumnIndex(ticket.getColumnIndex());
+            ticketVOs.add(ticketVO);
+        }
+        ticketWithCouponVO.setTicketVOList(ticketVOs);
+
+        //处理List<ActivityVO>
+        ScheduleItem scheduleItem = scheduleMapper.selectScheduleById(scheduleId);
+        List<ActivityVO> activities = activityMapper.selectActivitiesByMovie(scheduleItem.getMovieId());
+        ticketWithCouponVO.setActivities(activities);
+
+        //处理List<Coupon>
+        double amount = tickets.size() * scheduleItem.getFare();
+        double maxDiscount = 0;
+        List<Coupon> coupons = couponMapper.selectCouponByUserAndAmount(
+                userId, amount);
+        ticketWithCouponVO.setCoupons(coupons);
+
+        //处理total
+        if (coupons != null) {
+            int num = coupons.size();
+            for (int i = 0; i < num; i++) {
+                double temp = coupons.get(i).getDiscountAmount();
+                if(temp>maxDiscount){
+                    maxDiscount = temp;
+                }
+            }
+        }
+        ticketWithCouponVO.setTotal(amount - maxDiscount);
+
+        return ticketWithCouponVO;
     }
 
     @Override
