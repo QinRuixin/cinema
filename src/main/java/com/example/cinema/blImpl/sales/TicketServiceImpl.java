@@ -8,14 +8,12 @@ import com.example.cinema.data.promotion.CouponMapper;
 import com.example.cinema.data.promotion.VIPCardMapper;
 import com.example.cinema.data.sales.TicketMapper;
 import com.example.cinema.po.Ticket;
-import com.example.cinema.vo.HallVO;
-import com.example.cinema.vo.ScheduleItem;
-import com.example.cinema.vo.ScheduleWithSeatVO;
-import com.example.cinema.vo.TicketForm;
+import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,6 +38,21 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public void addTicket(TicketForm ticketForm) {
+        List<SeatForm> seats = ticketForm.getSeats();
+        int userId = ticketForm.getUserId();
+        int scheduleId = ticketForm.getScheduleId();
+        List<Ticket> tickets = new ArrayList<>();
+
+        seats.forEach(seatForm -> {
+            Ticket ticket = new Ticket();
+            ticket.setUserId(userId);
+            ticket.setScheduleId(scheduleId);
+            ticket.setState(0);
+            ticket.setColumnIndex(seatForm.getColumnIndex());
+            ticket.setRowIndex(seatForm.getRowIndex());
+            tickets.add(ticket);
+        });
+        ticketMapper.insertTickets(tickets);
     }
 
     @Override

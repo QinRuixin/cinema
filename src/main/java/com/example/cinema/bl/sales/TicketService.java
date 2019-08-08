@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface TicketService {
     /**
-     * TODO:锁座【增加票但状态为未付款】
+     * 锁座【增加票但状态为未付款】
      *
      * @param ticketForm
      */
