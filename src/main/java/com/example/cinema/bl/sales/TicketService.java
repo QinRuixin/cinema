@@ -32,7 +32,7 @@ public interface TicketService {
     ScheduleWithSeatVO getBySchedule(int scheduleId);
 
     /**
-     * TODO:获得用户买过的票
+     * 获得用户买过的票
      *
      * @param userId
      */
@@ -43,7 +43,7 @@ public interface TicketService {
      * todo 暂未完成根据优惠活动赠送优惠券
      *
      * @param id
-     * @param couponId
+     * @param couponId 若没有优惠卷 值为-1
      */
     void completeByVIPCard(List<Integer> id, int couponId);
 
@@ -53,12 +53,12 @@ public interface TicketService {
      * todo 暂未完成根据优惠活动赠送优惠券
      *
      * @param id
-     * @param couponId
+     * @param couponId 若没有优惠卷 值为-1
      */
     void completeTicket(List<Integer> id, int couponId);
 
     /**
-     * TODO:取消锁座（只有状态是"锁定中"的可以取消）
+     * 取消锁座（只有状态是"锁定中"的可以取消）
      *
      * @param id
      */

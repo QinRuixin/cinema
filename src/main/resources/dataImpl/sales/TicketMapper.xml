@@ -71,7 +71,7 @@
     <update id="cleanExpiredTicket">
         update ticket
         SET state =2
-        WHERE TIMESTAMPDIFF(MINUTE, now(), time) > 15
+        WHERE TIMESTAMPDIFF(MINUTE, time, now()) > 15
           and state = 0;
     </update>
 

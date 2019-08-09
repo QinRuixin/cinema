@@ -65,6 +65,7 @@ public interface TicketMapper {
     /**
      * 定时修改超时票
      */
+    //xml文件中TIMESTAMPDIFF(1,2,3) 结果为参数3-参数2
     @Scheduled(cron = "0/1 * * * * ?")
     void cleanExpiredTicket();
 }

@@ -15,6 +15,7 @@ import com.example.cinema.vo.*;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.trace.http.HttpTrace;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +40,7 @@ public class TicketServiceImpl implements TicketService {
     HallMapper hallmapper;
     @Autowired
     ActivityMapper activityMapper;
+
 
     @Override
     @Transactional
@@ -180,6 +182,12 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void cancelTicket(List<Integer> id) {
+        int size = id.size();
+        for (int i = 0; i < size; i++){
+            if(ticketMapper.selectTicketById(id.get(i)).getState()==0){
+                ticketMapper.updateTicketState(id.get(i),2);
+            }
+        }
     }
 
 }
