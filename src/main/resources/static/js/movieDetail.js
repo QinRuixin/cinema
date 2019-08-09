@@ -78,11 +78,26 @@ $(document).ready(function(){
         $('#movie-starring').text(movie.starring);
         $('#movie-writer').text(movie.screenWriter);
         $('#movie-length').text(movie.length);
+
+        //在修改栏同时添加
+        $('#movie-edit-name-input').val(movie.name);
+        $('#movie-edit-date-input').val(movie.startDate.slice(0,10));
+        $('#movie-edit-img-input').val(movie.posterUrl);
+        $('#movie-edit-description-input').val(movie.description);
+        $('#movie-edit-type-input').val(movie.type);
+        $('#movie-edit-length-input').val(movie.length);
+        $('#movie-edit-country-input').val(movie.country);
+        $('#movie-edit-language-input').val(movie.language);
+        $('#movie-edit-director-input').val(movie.director);
+        $('#movie-edit-star-input').val(movie.starring);
+        $('#movie-edit-writer-input').val(movie.screenWriter);
+
     }
 
     // user界面才有
     $('#like-btn').click(function () {
         var url = isLike ?'/movie/'+ movieId +'/unlike?userId='+ userId :'/movie/'+ movieId +'/like?userId='+ userId;
+
         postRequest(
              url,
             null,
@@ -95,12 +110,75 @@ $(document).ready(function(){
             });
     });
 
+
+
     // admin界面才有
-    $("#modify-btn").click(function () {
-       alert('交给你们啦，修改时需要在对应html文件添加表单然后获取用户输入，提交给后端，别忘记对用户输入进行验证。（可参照添加电影&添加排片&修改排片）');
-    });
+    // $("#modify-btn").click(function () {
+    //    // alert('交给你们啦，修改时需要在对应html文件添加表单然后获取用户输入，提交给后端，别忘记对用户输入进行验证。（可参照添加电影&添加排片&修改排片）');
+    // });
+    function getUpdateMovieForm(){
+        return {
+            id: movieId,
+            name: $('#movie-edit-name-input').val(),
+            startDate: $('#movie-edit-date-input').val(),
+            posterUrl: $('#movie-edit-img-input').val(),
+            description: $('#movie-edit-description-input').val(),
+            type: $('#movie-edit-type-input').val(),
+            length: $('#movie-edit-length-input').val(),
+            country: $('#movie-edit-country-input').val(),
+            language: $('#movie-edit-language-input').val(),
+            director: $('#movie-edit-director-input').val(),
+            starring: $('#movie-edit-star-input').val(),
+            screenWriter: $('#movie-edit-writer-input').val()
+        };
+    }
+
+    function validateEditForm(data) {
+        var isValidate = true;
+        if(!data.name) {
+            isValidate = false;
+            $('#movie-edit-name-input').parent('.form-group').addClass('has-error');
+        }
+        if(!data.posterUrl) {
+            isValidate = false;
+            $('#movie-edit-img-input').parent('.form-group').addClass('has-error');
+        }
+        if(!data.startDate) {
+            isValidate = false;
+            $('#movie-edit-date-input').parent('.form-group').addClass('has-error');
+        }
+        return isValidate;
+    }
+
+
+    $("#movie-edit-form-btn").click(
+        function () {
+            var form =getUpdateMovieForm();
+
+            // console.log(form.name);
+            if(!validateEditForm(form)){
+                return;
+            }
+
+            postRequest(
+                '/movie/update',
+                form,
+                function (res) {
+                    if(res.success){
+                        getMovie();
+                        $("#movieEdit").modal('hide');
+                    }else {
+                        alert(res.message);
+                    }
+                },
+                function (error) {
+                    alert(JSON.stringify(error));
+                }
+            );
+        }
+    );
+
     $("#delete-btn").click(function () {
-        // alert('交给你们啦，下架别忘记需要一个确认提示框，也别忘记下架之后要对用户有所提示哦');
         var r = confirm("确认要下架该电影吗");
         if(r){
             postRequest(
@@ -111,7 +189,7 @@ $(document).ready(function(){
                         getMovie();
                         alert('成功下架该电影');
                     } else {
-                        alert(res.message());
+                        alert(res.message);
                     }
                 },
                     function(error) {
