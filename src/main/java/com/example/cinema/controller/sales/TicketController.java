@@ -1,12 +1,15 @@
 package com.example.cinema.controller.sales;
 
 import com.example.cinema.bl.sales.TicketService;
+import com.example.cinema.config.InterceptorConfiguration;
+import com.example.cinema.vo.OrderForm;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.TicketForm;
 import com.example.cinema.vo.TicketVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -20,8 +23,14 @@ public class TicketController {
     TicketService ticketService;
 
     @PostMapping("/vip/buy")
-    public ResponseVO buyTicketByVIPCard(@RequestParam List<Integer> ticketId, @RequestParam int couponId) {
-        ticketService.completeByVIPCard(ticketId, couponId);
+    public ResponseVO buyTicketByVIPCard(@RequestBody OrderForm orderForm) {
+        ticketService.completeByVIPCard(orderForm.getTicketId(),orderForm.getCouponId());
+        return ResponseVO.buildSuccess();
+    }
+
+    @PostMapping("/buy")
+    public ResponseVO buyTicket(@RequestBody OrderForm orderForm) {
+        ticketService.completeByVIPCard(orderForm.getTicketId(),orderForm.getCouponId());
         return ResponseVO.buildSuccess();
     }
 
@@ -30,22 +39,9 @@ public class TicketController {
         return ResponseVO.buildSuccess(ticketService.addTicket(ticketForm));
     }
 
-//    @GetMapping("/getOrder")
-//    public ResponseVO getOrderByTicketVO(@RequestBody TicketVO TicketVO){
-//        ticketService.getOrder(ticketForm);
-//        return ResponseVO.buildSuccess();
-//    }
-
-    @PostMapping("/buy")
-    public ResponseVO buyTicket(@RequestParam List<Integer> ticketId, @RequestParam int couponId) {
-        ticketService.completeTicket(ticketId, couponId);
-        return ResponseVO.buildSuccess();
-    }
-
     @GetMapping("/get/{userId}")
     public ResponseVO getTicketByUserId(@PathVariable int userId) {
-        ticketService.getTicketByUser(userId);
-        return ResponseVO.buildSuccess();
+        return ResponseVO.buildSuccess( ticketService.getTicketByUser(userId));
     }
 
     @GetMapping("/get/occupiedSeats")

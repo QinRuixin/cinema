@@ -10,8 +10,11 @@ import com.example.cinema.data.sales.TicketMapper;
 import com.example.cinema.po.Activity;
 import com.example.cinema.po.Coupon;
 import com.example.cinema.po.Ticket;
+import com.example.cinema.po.VIPCard;
 import com.example.cinema.vo.*;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.trace.http.HttpTrace;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,6 +88,11 @@ public class TicketServiceImpl implements TicketService {
         double maxDiscount = 0;
         List<Coupon> coupons = couponMapper.selectCouponByUserAndAmount(
                 userId, amount);
+        //除去不适用于本场电影的coupon
+//        int movieId = scheduleItem.getMovieId();
+//        for (int i = 0; i < coupons.size(); i++) {
+//        }
+
         ticketWithCouponVO.setCoupons(coupons);
 
         //处理total
@@ -102,10 +110,6 @@ public class TicketServiceImpl implements TicketService {
         return ticketWithCouponVO;
     }
 
-    @Override
-    @Transactional
-    public void completeTicket(List<Integer> id, int couponId) {
-    }
 
     @Override
     public ScheduleWithSeatVO getBySchedule(int scheduleId) {
@@ -123,12 +127,55 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void getTicketByUser(int userId) {
+    public List<Ticket> getTicketByUser(int userId) {
+        return ticketMapper.selectTicketByUser(userId);
     }
 
     @Override
     @Transactional
     public void completeByVIPCard(List<Integer> id, int couponId) {
+
+        Ticket firstTicket = ticketMapper.selectTicketById(id.get(0));
+        int size = id.size();
+        int userId = firstTicket.getUserId();
+        double amount = size*(
+                scheduleMapper.selectScheduleById(
+                        firstTicket.getScheduleId()
+                ).getFare()
+        );
+
+        double discountAmount=0;
+        if(couponId>0){
+            discountAmount = couponMapper.selectById(couponId).getDiscountAmount();
+            couponMapper.deleteCouponUser(couponId,userId);
+        }
+
+        VIPCard vipCard = vipCardMapper.selectCardByUserId(userId);
+        vipCardMapper.updateCardBalance(vipCard.getId(),vipCard.getBalance()-(amount-discountAmount));
+
+        for (int i = 0; i < size; i++) {
+            ticketMapper.updateTicketState(id.get(i),1);
+        }
+//        activityMapper .selectActivitiesByMovie()
+    }
+
+    @Override
+    @Transactional
+    public void completeTicket(List<Integer> id, int couponId) {
+        Ticket firstTicket = ticketMapper.selectTicketById(id.get(0));
+        int size = id.size();
+        int userId = firstTicket.getUserId();
+
+        double discountAmount=0;
+        if(couponId>0){
+            discountAmount = couponMapper.selectById(couponId).getDiscountAmount();
+            couponMapper.deleteCouponUser(couponId,userId);
+        }
+
+        for (int i = 0; i < size; i++){
+            ticketMapper.updateTicketState(id.get(i),1);
+        }
+
     }
 
     @Override
