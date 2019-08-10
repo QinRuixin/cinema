@@ -157,7 +157,6 @@ $(document).ready(function(){
     $("#movie-edit-form-btn").click(
 
         function () {
-            console.log("beforeUpdate");
             var form =getUpdateMovieForm();
 
             // console.log(form.name);
@@ -180,7 +179,10 @@ $(document).ready(function(){
                     alert(JSON.stringify(error));
                 }
             );
-            getMovie();
+
+            window.location.href = "/admin/movie/manage"
+            // getMovie();
+            // console.log("getMovie()");
         }
     );
 
@@ -202,6 +204,7 @@ $(document).ready(function(){
                         alert(JSON.stringify(error));
                     }
             );
+            window.location.href = "/admin/movie/manage"
         }
     });
 

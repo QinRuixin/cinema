@@ -30,7 +30,7 @@ public class TicketController {
 
     @PostMapping("/buy")
     public ResponseVO buyTicket(@RequestBody OrderForm orderForm) {
-        ticketService.completeByVIPCard(orderForm.getTicketId(),orderForm.getCouponId());
+        ticketService.completeTicket(orderForm.getTicketId(),orderForm.getCouponId());
         return ResponseVO.buildSuccess();
     }
 

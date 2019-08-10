@@ -36,7 +36,8 @@
                  left join
              (select l.movie_id, count(*) as likeCount from movie_like l group by l.movie_id) l
              on m.id = l.movie_id
-        order by m.start_date asc
+        order by m.status,
+        m.start_date desc
     </select>
 
     <select id="selectOtherMoviesExcludeOff" resultMap="Movie">
@@ -45,7 +46,7 @@
                  left join
              (select l.movie_id, count(*) as likeCount from movie_like l group by l.movie_id) l
              on m.id = l.movie_id
-        order by m.start_date asc
+        order by m.start_date desc
     </select>
 
     <select id="selectMovieByKeyword" resultMap="Movie">

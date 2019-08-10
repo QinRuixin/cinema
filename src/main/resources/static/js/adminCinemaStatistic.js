@@ -76,17 +76,20 @@ $(document).ready(function() {
     }
 
     function getBoxOffice() {
+        //此处改为展示前五
 
         getRequest(
             '/statistics/boxOffice/total',
             function (res) {
                 var data = res.content || [];
-                var tableData = data.map(function (item) {
-                    return item.boxOffice;
-                });
-                var nameList = data.map(function (item) {
-                    return item.name;
-                });
+                var tableData=[];
+                var nameList=[];
+                var len = data.length<5?data.length:5;
+                for (var i = 0; i < len; i++) {
+                    tableData.push(data[i].boxOffice);
+                    nameList.push(data[i].name);
+                }
+
                 var option = {
                     title : {
                         text: '所有电影票房',
@@ -103,8 +106,10 @@ $(document).ready(function() {
                     series: [{
                         data: tableData,
                         type: 'bar'
+                        // barWidth:30
                     }]
                 };
+
                 var scheduleRateChart = echarts.init($("#box-office-container")[0]);
                 scheduleRateChart.setOption(option);
             },

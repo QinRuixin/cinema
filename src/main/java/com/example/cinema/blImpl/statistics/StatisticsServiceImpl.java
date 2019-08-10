@@ -41,6 +41,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     public List getAudiencePriceSevenDays() throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date today = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+        today = getNumDayAfterDate(today,1);
         Date startDate = getNumDayAfterDate(today, -6);
         List<AudiencePriceVO> audiencePriceVOList = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
@@ -104,6 +105,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     public List getPopularMovies(int days, int movieNum) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date endDate = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+        endDate = getNumDayAfterDate(endDate,1);
         Date startDate = getNumDayAfterDate(endDate,-days);
         return statisticsMapper.selectMovieBoxOfficeSeveralDays(startDate,endDate,movieNum);
     }

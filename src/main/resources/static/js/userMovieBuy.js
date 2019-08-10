@@ -130,8 +130,7 @@ function orderConfirmClick() {
         function (res) {
             isVIP = res.success;
             useVIP = res.success;
-            //添加VIPCardId
-            sessionStorage.setItem("VIPCardId",res.content.id);
+            // console.log(isVIP);
             if (isVIP) {
                 $('#member-balance').html("<div><b>会员卡余额：</b>" + res.content.balance.toFixed(2) + "元</div>");
             } else {

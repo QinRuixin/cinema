@@ -78,8 +78,12 @@ public class TicketServiceImpl implements TicketService {
 
         //处理List<ActivityVO>
         ScheduleItem scheduleItem = scheduleMapper.selectScheduleById(scheduleId);
-        List<ActivityVO> activities = activityMapper.selectActivitiesByMovie(scheduleItem.getMovieId());
-        ticketWithCouponVO.setActivities(activities);
+
+            List<ActivityVO> activities = activityMapper.selectActivitiesByMovie(scheduleItem.getMovieId());
+            ticketWithCouponVO.setActivities(activities);
+
+
+
 
         //处理List<Coupon>
         double amount = tickets.size() * scheduleItem.getFare();

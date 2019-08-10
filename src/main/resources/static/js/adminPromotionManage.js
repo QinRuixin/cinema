@@ -4,6 +4,8 @@ $(document).ready(function() {
 
     getActivities();
 
+
+
     function getActivities() {
         getRequest(
             '/activity/get',
@@ -125,6 +127,9 @@ $(document).ready(function() {
     var selectedMovieIds = new Set();
     var selectedMovieNames = new Set();
     var firstClickSingle = true;
+
+    //初始化
+    addAllMovies(selectedMovieIds);
 
     $('#activity-movie-input').change(function () {
         var movieId = $('#activity-movie-input').val();
