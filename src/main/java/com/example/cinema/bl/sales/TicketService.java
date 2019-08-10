@@ -40,7 +40,7 @@ public interface TicketService {
 
     /**
      * 完成购票【使用会员卡】流程包括会员卡扣费、校验优惠券和
-     * todo 暂未完成根据优惠活动赠送优惠券
+     * 完成根据优惠活动赠送优惠券
      *
      * @param id
      * @param couponId 若没有优惠卷 值为-1
@@ -50,7 +50,7 @@ public interface TicketService {
 
     /**
      * 完成购票【不使用会员卡】流程包括校验优惠券和
-     * todo 暂未完成根据优惠活动赠送优惠券
+     * 完成根据优惠活动赠送优惠券
      *
      * @param id
      * @param couponId 若没有优惠卷 值为-1
