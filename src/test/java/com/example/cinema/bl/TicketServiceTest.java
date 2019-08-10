@@ -43,13 +43,13 @@ public class TicketServiceTest {
 
         TicketForm ticketForm = new TicketForm();
         ticketForm.setSeats(seats);
-        ticketForm.setUserId(4);
+        ticketForm.setUserId(-1);
         ticketForm.setScheduleId(77);
         ticketService.addTicket(ticketForm);
         ticketForm.setScheduleId(70);
         ticketService.addTicket(ticketForm);
 
-        List<Ticket> ticket2 = ticketMapper.selectTicketByUser(3);
+        List<Ticket> ticket2 = ticketMapper.selectTicketByUser(-1);
 
         Assert.assertEquals(ticket2.get(0).getScheduleId(),77);
 

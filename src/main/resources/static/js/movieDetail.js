@@ -114,7 +114,6 @@ $(document).ready(function(){
 
     // admin界面才有
     // $("#modify-btn").click(function () {
-    //    // alert('交给你们啦，修改时需要在对应html文件添加表单然后获取用户输入，提交给后端，别忘记对用户输入进行验证。（可参照添加电影&添加排片&修改排片）');
     // });
     function getUpdateMovieForm(){
         return {
@@ -147,12 +146,18 @@ $(document).ready(function(){
             isValidate = false;
             $('#movie-edit-date-input').parent('.form-group').addClass('has-error');
         }
+        if(!data.length|| (!/^\d+$/.test(data.length))) {
+            isValidate = false;
+            $('#movie-length-input').parent('.form-group').addClass('has-error');
+        }
         return isValidate;
     }
 
 
     $("#movie-edit-form-btn").click(
+
         function () {
+            console.log("beforeUpdate");
             var form =getUpdateMovieForm();
 
             // console.log(form.name);
@@ -165,8 +170,8 @@ $(document).ready(function(){
                 form,
                 function (res) {
                     if(res.success){
-                        getMovie();
                         $("#movieEdit").modal('hide');
+                        console.log("afterUpdate");
                     }else {
                         alert(res.message);
                     }
@@ -175,6 +180,7 @@ $(document).ready(function(){
                     alert(JSON.stringify(error));
                 }
             );
+            getMovie();
         }
     );
 
@@ -198,5 +204,29 @@ $(document).ready(function(){
             );
         }
     });
+
+    // $('#movie-edit-remove-btn').click(
+    //     function () {
+    //         var r = confirm("确认要删除该电影吗");
+    //         if(r){
+    //             postRequest(
+    //                 '',
+    //                 {"movieIdList":[movieId]},
+    //                 function (res) {
+    //                     if (res.success) {
+    //                         getMovie();
+    //                         alert('成功删除该电影');
+    //                     } else {
+    //                         alert(res.message);
+    //                     }
+    //                 },
+    //                 function(error) {
+    //                     alert(JSON.stringify(error));
+    //                 }
+    //             );
+    //         }
+    //     }
+    //
+    // );
 
 });

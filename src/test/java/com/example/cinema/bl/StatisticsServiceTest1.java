@@ -3,6 +3,7 @@ package com.example.cinema.bl;
 import com.example.cinema.bl.statistics.StatisticsService;
 import com.example.cinema.data.statistics.StatisticsMapper;
 import com.example.cinema.vo.PlacingRateVO;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,8 +49,8 @@ public class StatisticsServiceTest1 {
                 logger.info(lists.get(i).getName());
                 logger.info(lists.get(i).getRate().toString());
                 logger.info("-------------------");
-//                System.out.println(lists.get(i).getName());
             }
+//            Assert.assertEquals(lists.get(0).getName(),"夏目友人帐");
         } catch (ParseException e) {
             e.printStackTrace();
         }

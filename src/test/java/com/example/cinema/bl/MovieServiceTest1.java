@@ -77,17 +77,4 @@ public class MovieServiceTest1 {
 //        logger.info(movieForm.getId().toString());
     }
 
-//    /**
-//     * 测试addMovie添加失败
-//     */
-//    @Test
-////            (expected = DuplicateKeyException.class)
-//    @Transactional
-//    public void addMovieTest2(){
-//        movieService.addMovie(movieForm);
-//        movieForm.setId();
-//
-//        movieService.addMovie(movieForm);
-////        logger.info(movieForm.getId().toString());
-//    }
 }

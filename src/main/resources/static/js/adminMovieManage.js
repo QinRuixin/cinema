@@ -49,6 +49,10 @@ $(document).ready(function(){
             isValidate = false;
             $('#movie-date-input').parent('.form-group').addClass('has-error');
         }
+        if(!data.length|| (!/^\d+$/.test(data.length))) {
+            isValidate = false;
+            $('#movie-length-input').parent('.form-group').addClass('has-error');
+        }
         return isValidate;
     }
 
