@@ -81,7 +81,7 @@ CREATE TABLE `coupon` (
   `name` varchar(45) DEFAULT NULL,
   `target_amount` float DEFAULT NULL,
   `discount_amount` float DEFAULT NULL,
-  `start_time` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `start_time` timestamp NOT NULL,
   `end_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
@@ -163,7 +163,7 @@ CREATE TABLE `movie` (
   `country` varchar(255) DEFAULT NULL,
   `language` varchar(255) DEFAULT NULL,
   `length` int(11) NOT NULL,
-  `start_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `start_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `name` varchar(255) NOT NULL,
   `description` text,
   `status` int(11) DEFAULT '0',
@@ -217,7 +217,7 @@ CREATE TABLE `schedule` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hall_id` int(11) NOT NULL,
   `movie_id` int(11) NOT NULL,
-  `start_time` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `start_time` timestamp NOT NULL,
   `end_time` timestamp NOT NULL,
   `fare` double NOT NULL,
   PRIMARY KEY (`id`)
@@ -325,7 +325,7 @@ CREATE TABLE `vip_card` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `balance` float DEFAULT NULL,
-  `join_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `join_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `vip_card_user_id_uindex` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
