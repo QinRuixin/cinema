@@ -1,15 +1,31 @@
 .table-wrapper {
-    padding: 20px;
+    margin: 10px;
+    padding: 15px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    border-top: 30px solid #660099;
+    border-bottom: 20px solid #660099;
 }
 
-.table-wrapper .table b {
-    color: #1caf9a;
-    font-size: 20px;
+/*.table-wrapper .table b{*/
+.table-wrapper .table{
+    color: #000000;
+    font-size: 16px;
 }
 
 .table-wrapper .table td{
     height: 60px;
     vertical-align: middle;
+}
+
+.table-wrapper .table .content .payFail {
+    font-style: italic;
+    color: #c9302c;
+
+}
+
+.table-wrapper .table .content .paySuccess {
+    font-style: italic;
 }
 
 .card {
@@ -29,4 +45,14 @@
 .card .header .title {
     font-size: 24px;
     font-weight: 500;
+}
+
+.card .line {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.card .line hr {
+    flex-grow: 1;
+    margin-left: 15px;
 }

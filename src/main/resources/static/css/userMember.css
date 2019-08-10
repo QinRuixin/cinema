@@ -29,6 +29,9 @@
 }
 
 .card .line hr {
+
+    height: 5px;
+
     flex-grow: 1;
     margin-left: 10px;
 }
