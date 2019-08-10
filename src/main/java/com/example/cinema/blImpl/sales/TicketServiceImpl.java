@@ -7,15 +7,11 @@ import com.example.cinema.data.promotion.ActivityMapper;
 import com.example.cinema.data.promotion.CouponMapper;
 import com.example.cinema.data.promotion.VIPCardMapper;
 import com.example.cinema.data.sales.TicketMapper;
-import com.example.cinema.po.Activity;
 import com.example.cinema.po.Coupon;
 import com.example.cinema.po.Ticket;
 import com.example.cinema.po.VIPCard;
 import com.example.cinema.vo.*;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.trace.http.HttpTrace;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,11 +86,6 @@ public class TicketServiceImpl implements TicketService {
         double maxDiscount = 0;
         List<Coupon> coupons = couponMapper.selectCouponByUserAndAmount(
                 userId, amount);
-        //除去不适用于本场电影的coupon
-//        int movieId = scheduleItem.getMovieId();
-//        for (int i = 0; i < coupons.size(); i++) {
-//        }
-
         ticketWithCouponVO.setCoupons(coupons);
 
         //处理total
@@ -129,8 +120,24 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<Ticket> getTicketByUser(int userId) {
-        return ticketMapper.selectTicketByUser(userId);
+    public List<TicketWithScheduleVO> getTicketByUser(int userId) {
+        List<Ticket> tickets = ticketMapper.selectTicketByUser(userId);
+        List<TicketWithScheduleVO> ticketWithSchedules = new ArrayList<>();
+        int size = tickets.size();
+        for (int i = 0; i < size; i++) {
+            TicketWithScheduleVO ticketWithSchedule = new TicketWithScheduleVO();
+            Ticket ticket = tickets.get(i);
+            ticketWithSchedule.setId(ticket.getId());
+            ticketWithSchedule.setUserId(ticket.getUserId());
+            ticketWithSchedule.setState(ticket.getState()==1?"支付完成":"支付未完成");
+            ticketWithSchedule.setColumnIndex(ticket.getColumnIndex());
+            ticketWithSchedule.setRowIndex(ticket.getRowIndex());
+            ticketWithSchedule.setTime(ticket.getTime());
+            ScheduleItem scheduleItem = scheduleMapper.selectScheduleById(ticket.getScheduleId());
+            ticketWithSchedule.setSchedule(scheduleItem);
+            ticketWithSchedules.add(ticketWithSchedule);
+        }
+        return ticketWithSchedules;
     }
 
     @Override
@@ -140,25 +147,37 @@ public class TicketServiceImpl implements TicketService {
         Ticket firstTicket = ticketMapper.selectTicketById(id.get(0));
         int size = id.size();
         int userId = firstTicket.getUserId();
-        double amount = size*(
-                scheduleMapper.selectScheduleById(
-                        firstTicket.getScheduleId()
-                ).getFare()
-        );
+        int scheduleId = firstTicket.getScheduleId();
+        double amount = 0;
 
+//       amount = size*(
+//                scheduleMapper.selectScheduleById(scheduleId).getFare()
+//        );
+
+        for (int i = 0; i < size; i++) {
+            Ticket ticket = ticketMapper.selectTicketById(id.get(i));
+            amount+= scheduleMapper.selectScheduleById(
+                    ticket.getScheduleId()
+            ).getFare();
+        }
         double discountAmount=0;
         if(couponId>0){
             discountAmount = couponMapper.selectById(couponId).getDiscountAmount();
             couponMapper.deleteCouponUser(couponId,userId);
         }
-
         VIPCard vipCard = vipCardMapper.selectCardByUserId(userId);
         vipCardMapper.updateCardBalance(vipCard.getId(),vipCard.getBalance()-(amount-discountAmount));
 
         for (int i = 0; i < size; i++) {
             ticketMapper.updateTicketState(id.get(i),1);
         }
-//        activityMapper .selectActivitiesByMovie()
+
+        int movieId = scheduleMapper.selectScheduleById(scheduleId).getMovieId();
+        List<ActivityVO> activities = activityMapper .selectActivitiesByMovie(movieId);
+        for (int i = 0; i < activities.size(); i++) {
+            couponMapper.insertCouponUser(activities.get(i).getCoupon().getId(),userId);
+        }
+
     }
 
     @Override
@@ -167,15 +186,17 @@ public class TicketServiceImpl implements TicketService {
         Ticket firstTicket = ticketMapper.selectTicketById(id.get(0));
         int size = id.size();
         int userId = firstTicket.getUserId();
-
-        double discountAmount=0;
+        int scheduleId = firstTicket.getScheduleId();
+        int movieId = scheduleMapper.selectScheduleById(scheduleId).getMovieId();
         if(couponId>0){
-            discountAmount = couponMapper.selectById(couponId).getDiscountAmount();
             couponMapper.deleteCouponUser(couponId,userId);
         }
-
         for (int i = 0; i < size; i++){
             ticketMapper.updateTicketState(id.get(i),1);
+        }
+        List<ActivityVO> activities = activityMapper .selectActivitiesByMovie(movieId);
+        for (int i = 0; i < activities.size(); i++) {
+            couponMapper.insertCouponUser(activities.get(i).getCoupon().getId(),userId);
         }
 
     }

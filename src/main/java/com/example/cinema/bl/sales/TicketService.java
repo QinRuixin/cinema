@@ -1,11 +1,7 @@
 package com.example.cinema.bl.sales;
 
 import com.example.cinema.po.Ticket;
-import com.example.cinema.vo.ScheduleWithSeatVO;
-import com.example.cinema.vo.TicketForm;
-import com.example.cinema.vo.TicketVO;
-import com.example.cinema.vo.TicketWithCouponVO;
-import org.jetbrains.annotations.Nullable;
+import com.example.cinema.vo.*;
 
 import java.util.List;
 
@@ -33,10 +29,11 @@ public interface TicketService {
 
     /**
      * 获得用户买过的票
+     * 按照支付完成、日期排列
      *
      * @param userId
      */
-    List<Ticket> getTicketByUser(int userId);
+    List<TicketWithScheduleVO> getTicketByUser(int userId);
 
     /**
      * 完成购票【使用会员卡】流程包括会员卡扣费、校验优惠券和

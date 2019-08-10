@@ -57,6 +57,8 @@ public interface TicketMapper {
     Ticket selectTicketById(int id);
 
     /**
+     * 按照支付完成、日期排列
+     *
      * @param userId
      * @return
      */
