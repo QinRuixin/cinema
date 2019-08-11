@@ -44,15 +44,15 @@ public class TicketServiceTest {
         seatForm.setRowIndex(2);
         seats.add(seatForm);
 
-        TicketForm ticketForm = new TicketForm();
-        ticketForm.setSeats(seats);
-        ticketForm.setUserId(-1);
-        ticketForm.setScheduleId(67);
-        ticketService.addTicket(ticketForm);
-        ticketForm.setScheduleId(68);
-        ticketService.addTicket(ticketForm);
+//        TicketForm ticketForm = new TicketForm();
+//        ticketForm.setSeats(seats);
+//        ticketForm.setUserId(-1);
+//        ticketForm.setScheduleId(67);
+//        ticketService.addTicket(ticketForm);
+//        ticketForm.setScheduleId(68);
+//        ticketService.addTicket(ticketForm);
 
-        List<Ticket> ticket2 = ticketMapper.selectTicketByUser(-1);
+//        List<Ticket> ticket2 = ticketMapper.selectTicketByUser(-1);
 
 //        Assert.assertEquals(ticket2.get(0).getScheduleId(),67);
 //

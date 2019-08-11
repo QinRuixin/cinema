@@ -1,5 +1,7 @@
 package com.example.cinema.bl.statistics;
 
+import com.example.cinema.vo.*;
+
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -15,14 +17,14 @@ public interface StatisticsService {
      * @param date
      * @return
      */
-    List getScheduleRateByDate(Date date) throws ParseException;
+    List<MovieScheduleTimeVO> getScheduleRateByDate(Date date) throws ParseException;
 
     /**
      * 获取所有电影的累计票房(降序排序，且包含已下架的电影)
      *
      * @return
      */
-    List getTotalBoxOffice();
+    List<MovieTotalBoxOfficeVO> getTotalBoxOffice();
 
     /**
      * 客单价：（某天的客单价=当天观众购票所花金额/购票人次数）
@@ -30,7 +32,7 @@ public interface StatisticsService {
      *
      * @return
      */
-    List getAudiencePriceSevenDays() throws ParseException;
+    List<AudiencePriceVO> getAudiencePriceSevenDays() throws ParseException;
 
 
     /**
@@ -42,7 +44,7 @@ public interface StatisticsService {
      * @param date
      * @return
      */
-    List getMoviePlacingRateByDate(Date date) throws ParseException;
+    List<PlacingRateVO> getMoviePlacingRateByDate(Date date) throws ParseException;
 
     /**
      * 获取最近days天内，最受欢迎的movieNum个电影(可以简单理解为最近days内票房越高的电影越受欢迎)
@@ -51,6 +53,6 @@ public interface StatisticsService {
      * @param movieNum
      * @return
      */
-    List getPopularMovies(int days, int movieNum) throws ParseException;
+    List<MovieBoxOfficeSeveralDaysVO> getPopularMovies(int days, int movieNum) throws ParseException;
 
 }

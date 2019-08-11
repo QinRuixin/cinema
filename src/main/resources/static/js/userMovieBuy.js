@@ -4,7 +4,8 @@ var order = {ticketId: [], couponId: 0};
 var coupons = [];
 var isVIP = false;
 var useVIP = true;
-
+var cardBalance;
+var actualTotal;
 
 $(document).ready(function () {
 
@@ -132,6 +133,7 @@ function orderConfirmClick() {
             useVIP = res.success;
             // console.log(isVIP);
             if (isVIP) {
+                cardBalance = res.content.balance;
                 $('#member-balance').html("<div><b>会员卡余额：</b>" + res.content.balance.toFixed(2) + "元</div>");
             } else {
                 $("#member-pay").css("display", "none");
@@ -208,7 +210,7 @@ function renderOrder(orderInfo) {
 function changeCoupon(couponIndex) {
     order.couponId = coupons[couponIndex].id;
     $('#order-discount').text("优惠金额： ¥" + coupons[couponIndex].discountAmount.toFixed(2));
-    var actualTotal = (parseFloat($('#order-total').text()) - parseFloat(coupons[couponIndex].discountAmount)).toFixed(2);
+    actualTotal = (parseFloat($('#order-total').text()) - parseFloat(coupons[couponIndex].discountAmount)).toFixed(2);
     $('#order-actual-total').text(" ¥" + actualTotal);
     $('#pay-amount').html("<div><b>金额：</b>" + actualTotal + "元</div>");
 
@@ -216,6 +218,10 @@ function changeCoupon(couponIndex) {
 
 function payConfirmClick() {
     if (useVIP) {
+        if(cardBalance-actualTotal<0){
+            alert("会员卡余额不足");
+            return;
+        }
         postPayRequest();
     } else {
         if (validateForm()) {

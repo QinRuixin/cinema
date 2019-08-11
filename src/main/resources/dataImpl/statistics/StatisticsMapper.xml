@@ -64,7 +64,7 @@
 		        right join
 		        (select schedule_id from ticket where  state = 1 ) t
 		    on schedule.id = t.schedule_id
-	        where schedule.start_time between #{startDate} and #{endDate}) s
+	        where schedule.start_time between #{startDate} and #{endDate} group by movieId) s
 	    on s.movieId = movie.id
         order by boxOffice desc
         limit #{movieNum}

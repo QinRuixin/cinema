@@ -190,11 +190,11 @@ $(document).ready(function() {
 
     function validateScheduleForm(form){
         var isValidate = true;
-        if(!form.hallId){
+        if((!form.hallId)||(!/^\d+$/.test(hallId)) ){
             isValidate =false;
             $("#schedule-hall-input").parent('.form-group').addClass('has-error');
         }
-        if(!form.movieId){
+        if((!form.movieId)||(!/^\d+$/.test(hallId))){
             isValidate =false;
             $("#schedule-movie-input").parent('.form-group').addClass('has-error');
         }
@@ -221,11 +221,11 @@ $(document).ready(function() {
 
     function validateEditForm(form){
         var isValidate = true;
-        if(!form.hallId){
+        if((!form.hallId)||(!/^\d+$/.test(hallId))){
             isValidate =false;
             $("#schedule-edit-hall-input").parent('.form-group').addClass('has-error');
         }
-        if(!form.movieId){
+        if((!form.movieId)||(!/^\d+$/.test(hallId))){
             isValidate =false;
             $("#schedule-edit-movie-input").parent('.form-group').addClass('has-error');
         }

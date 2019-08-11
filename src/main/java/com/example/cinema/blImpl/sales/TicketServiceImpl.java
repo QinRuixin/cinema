@@ -92,17 +92,7 @@ public class TicketServiceImpl implements TicketService {
                 userId, amount);
         ticketWithCouponVO.setCoupons(coupons);
 
-        //处理total
-        if (coupons != null) {
-            int num = coupons.size();
-            for (int i = 0; i < num; i++) {
-                double temp = coupons.get(i).getDiscountAmount();
-                if(temp>maxDiscount){
-                    maxDiscount = temp;
-                }
-            }
-        }
-        ticketWithCouponVO.setTotal(amount - maxDiscount);
+        ticketWithCouponVO.setTotal(amount);
 
         return ticketWithCouponVO;
     }

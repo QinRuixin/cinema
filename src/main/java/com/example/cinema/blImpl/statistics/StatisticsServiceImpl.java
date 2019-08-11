@@ -20,7 +20,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private StatisticsMapper statisticsMapper;
 
     @Override
-    public List getScheduleRateByDate(Date date) throws ParseException {
+    public List<MovieScheduleTimeVO> getScheduleRateByDate(Date date) throws ParseException {
         Date requireDate = date;
         if (requireDate == null) {
             requireDate = new Date();
@@ -33,12 +33,12 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List getTotalBoxOffice() {
+    public List<MovieTotalBoxOfficeVO> getTotalBoxOffice() {
         return statisticsMapper.selectMovieTotalBoxOffice();
     }
 
     @Override
-    public List getAudiencePriceSevenDays() throws ParseException {
+    public List<AudiencePriceVO> getAudiencePriceSevenDays() throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date today = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
 //        today = getNumDayAfterDate(today,1);
@@ -58,7 +58,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List getMoviePlacingRateByDate(Date date) throws ParseException{
+    public List<PlacingRateVO> getMoviePlacingRateByDate(Date date) throws ParseException{
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         date = simpleDateFormat.parse(simpleDateFormat.format(date));
         Date nextDate = getNumDayAfterDate(date,1);
@@ -103,7 +103,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List getPopularMovies(int days, int movieNum) throws ParseException {
+    public List<MovieBoxOfficeSeveralDaysVO> getPopularMovies(int days, int movieNum) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date endDate = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
         endDate = getNumDayAfterDate(endDate,1);

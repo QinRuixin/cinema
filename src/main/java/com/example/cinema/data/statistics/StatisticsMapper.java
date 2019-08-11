@@ -39,7 +39,7 @@ public interface StatisticsMapper {
 
     /**
      * 查询某天某影厅电影购票人数及影厅大小
-     *
+     *TODO 存在bug，当其中一个影厅无人购票时不会被计算进去
      *
      * @param date
      * @param nextDate
