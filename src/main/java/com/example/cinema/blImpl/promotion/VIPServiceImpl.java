@@ -27,7 +27,8 @@ public class VIPServiceImpl implements VIPService {
         VIPCard vipCard = new VIPCard();
         vipCard.setUserId(userId);
         vipCard.setBalance(0);
-        int id = vipCardMapper.insertOneCard(vipCard);
+        vipCardMapper.insertOneCard(vipCard);
+        int id= vipCard.getId();
         return vipCardMapper.selectCardById(id);
     }
 

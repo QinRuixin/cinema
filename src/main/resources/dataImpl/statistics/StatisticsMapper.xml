@@ -52,6 +52,7 @@
             left join
 	        (select id,name as movie_name from movie) n
 	        on n.id = mh.movie_id
+	        order by movie_name
     </select>
 
     <select id="selectMovieBoxOfficeSeveralDays" resultType="com.example.cinema.vo.MovieBoxOfficeSeveralDaysVO">

@@ -82,13 +82,20 @@ $(document).ready(function() {
             '/statistics/boxOffice/total',
             function (res) {
                 var data = res.content || [];
-                var tableData=[];
-                var nameList=[];
-                var len = data.length<5?data.length:5;
-                for (var i = 0; i < len; i++) {
-                    tableData.push(data[i].boxOffice);
-                    nameList.push(data[i].name);
-                }
+                // var tableData=[];
+                // var nameList=[];
+                // var len = data.length<5?data.length:5;
+                // for (var i = 0; i < len; i++) {
+                //     tableData.push(data[i].boxOffice);
+                //     nameList.push(data[i].name);
+                // }
+
+                var tableData = data.map(function (item) {
+                    return item.boxOffice;
+                });
+                var nameList = data.map(function (item) {
+                    return item.name;
+                });
 
                 var option = {
                     title : {

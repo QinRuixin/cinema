@@ -26,7 +26,7 @@ import static org.mockito.Mockito.mock;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MovieServiceTest1 {
+public class MovieServiceTest {
     private Logger logger;
 
     @Autowired

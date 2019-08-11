@@ -13,17 +13,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * 测试AccountServiceImpl的registerAccount和非空的login方法
- */
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class AccountServiceTest1 {
+public class AccountServiceTest {
 
     private Logger logger;
     @Autowired
     private AccountService accountService;
 
+    /**
+     * 测试AccountServiceImpl的registerAccount和非空的login方法
+     */
     @Test
     @Transactional
     public void registerAccountAndLoginTest(){
@@ -38,4 +39,22 @@ public class AccountServiceTest1 {
         Assert.assertEquals("JUniteTest",actual.getUsername());
 
     }
+
+    /**
+     * 测试AccountServiceImpl的参数为空的login方法
+     */
+    @Test
+    @Transactional
+    public void loginTest() {
+        UserForm userForm = new UserForm();
+        userForm.setUsername("JUniteTest");
+        userForm.setPassword("123456");
+
+        logger = LoggerFactory.getLogger(getClass());
+
+        UserVO actual = accountService.login(userForm);
+//        logger.info(actual.getId().toString());
+        Assert.assertNull(actual);
+    }
+
 }

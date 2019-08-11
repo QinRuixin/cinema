@@ -41,7 +41,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     public List getAudiencePriceSevenDays() throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date today = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
-        today = getNumDayAfterDate(today,1);
+//        today = getNumDayAfterDate(today,1);
         Date startDate = getNumDayAfterDate(today, -6);
         List<AudiencePriceVO> audiencePriceVOList = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
@@ -49,6 +49,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             Date date = getNumDayAfterDate(startDate, i);
             audiencePriceVO.setDate(date);
             List<AudiencePrice> audiencePriceList = statisticsMapper.selectAudiencePrice(date, getNumDayAfterDate(date, 1));
+
             double totalPrice = audiencePriceList.stream().mapToDouble(AudiencePrice::getTotalPrice).sum();
             audiencePriceVO.setPrice(Double.parseDouble(String.format("%.2f", audiencePriceList.size() == 0 ? 0 : totalPrice / audiencePriceList.size())));
             audiencePriceVOList.add(audiencePriceVO);
@@ -84,8 +85,8 @@ public class StatisticsServiceImpl implements StatisticsService {
             if(idAndNum.get(movieId)==1){
 //                double rate = (double)now.getNum()/(now.getRow()*now.getColumn());
                 temp.setRate(Double.parseDouble(String.format("%.2f",
-                        (double)now.getNum()/(now.getRow()*now.getColumn()))));
-                //是否可行
+                        now.getNum()/(double)(now.getRow()*now.getColumn()))));
+
             }else {
                 int num1 = now.getNum();
                 int total1 = now.getRow()*now.getColumn();
@@ -94,7 +95,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                 int num2 = now.getNum();
                 int total2 = now.getRow()*now.getColumn();
                 temp.setRate(Double.parseDouble(String.format("%.2f",
-                        (double)(num1+num2)/(total1+total2))));
+                        (num1+num2)/(double)(total1+total2))));
             }
             moviePlacingRateVOList.add(temp);
         }

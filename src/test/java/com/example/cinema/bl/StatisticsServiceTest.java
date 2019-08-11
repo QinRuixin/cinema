@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class StatisticsServiceTest1 {
+public class StatisticsServiceTest {
     private Logger logger;
 
     @Autowired
